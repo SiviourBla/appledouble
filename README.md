@@ -3,7 +3,6 @@
 Generates appledouble files on any filesystem using copyfile.
 
 This can be useful when you are sharing files stored on a filesystem that supports extended attributes with another mac through a protocol that doesn't (for example, sharing a folder stored on an [APFS Volume](https://en.wikipedia.org/wiki/Apple_File_System) to another mac through [NFS](https://en.wikipedia.org/wiki/Network_File_System)).
-
 ### ![!](https://via.placeholder.com/15/ff1111/ff1111.png) **This program uses Apple's copyfile library and thus should only function on macOS.**
 
 ## More information
@@ -27,4 +26,3 @@ This can be useful when you are sharing files stored on a filesystem that suppor
 	 - Copy POSIX and ACL information in addition to extended attributes
  - `-h`
 	 - Print the help page and exit
-
