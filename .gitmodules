@@ -1,0 +1,4 @@
+[submodule "compile/compile_sh"]
+	path = compile/compile_sh
+	url = https://github.com/SiviourBla/compile.sh
+	branch = main

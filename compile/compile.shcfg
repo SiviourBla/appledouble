@@ -1,0 +1,12 @@
+#Documentation: https://github.com/SiviourBla/compile.sh#Configuration
+
+SourceFolder="../src"
+ReturnPath="../compile"
+ExecName="appledouble"
+MaxDepth="1"
+
+HasInputFile="N"
+InputCommand="echo"
+InputFile="./input.txt"
+
+ExecOutputFile="./output.txt"
