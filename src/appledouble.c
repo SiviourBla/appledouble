@@ -40,8 +40,8 @@ int MakeAppleDouble(ExecInfo *Info) {
 	//If copyfile outputs a value other than 0, it has failed
 	int ResultCode = copyfile(Info->Config.FPath, OutputPath, NULL, Info->Config.CFFlags);
 	if (ResultCode) {
-		fprintf(stderr, "Error: copyfile failed with error code %d!\nInput file: \"%s\"\nOutput file: \"%s\"", ResultCode, Info->Config.FPath, OutputPath);
-		fprintf(stderr, "Please refer to copyfile's error codes through 'man 3 copyfile' for more information");
+		fprintf(stderr, "Error: copyfile failed with error code %d!\nInput file: \"%s\"\nOutput file: \"%s\"\n", ResultCode, Info->Config.FPath, OutputPath);
+		fprintf(stderr, "Please refer to copyfile's error codes through 'man 3 copyfile' for more information\n");
 	}
 	return ResultCode;
 }
