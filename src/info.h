@@ -5,12 +5,12 @@
 | Year: 2022
 | Project: appledouble
 | Project Summary: Generates appledouble files on any filesystem using copyfile.
-| File Summary: Parses the user's arguments.
+| File Summary: Displays different information about the program.
 \*------*/
 
-#ifndef ARGS_H_
-#define ARGS_H_
+#ifndef INFO_H_
+#define INFO_H_
 
-int ParseArgs(ExecInfo *Info, const int argc, const char *argv[]);
+void DisplayInfo(ExecInfo *Info, const int DisplayMode);
 
 #endif

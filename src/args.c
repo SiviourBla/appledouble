@@ -5,7 +5,7 @@
 | Year: 2022
 | Project: appledouble
 | Project Summary: Generates appledouble files on any filesystem using copyfile.
-| File Summary: Parses the user's arguments and displays the help page.
+| File Summary: Parses the user's arguments.
 \*------*/
 
 #include <stdio.h>
@@ -14,28 +14,7 @@
 #include <unistd.h>
 #include "customDefs.h"
 #include "args.h"
-
-void DisplayHelp(ExecInfo Info) {
-	char HelpText[] =
-		"appledouble v%s\n"
-		"\n"
-		"Generate appledouble files on any filesystem using copyfile\n"
-		"More info:\n"
-		"	appledouble: <https://en.wikipedia.org/wiki/AppleDouble_format>\n"
-		"	copyfile: man 3 copyfile\n"
-		"\n"
-		"Usage:\n"
-		"	appledouble [-frRh] file\n" 
-		"\n"
-		"Options:\n" 
-		"	-f    Overwrite any existing appledouble files\n"//COPYFILE_UNLINK + !COPYFILE_EXCL
-		"	-r    Follow symlinks\n"//!COPYFILE_NOFOLLOW
-		"	-R    Attempt to convert existing appledouble files\n"//!COPYFILE_NOFOLLOW
-		"	-a    Copy POSIX and ACL information in addition to extended attributes\n"//COPYFILE_SECURITY
-		"	-h    Display this help page\n"
-		"\n";
-	printf(HelpText, Info.VersionString);
-}
+#include "info.h"
 
 int ParseArgs(ExecInfo *Info, const int argc, const char *argv[]) {
 	//Used for the error messages
@@ -47,29 +26,31 @@ int ParseArgs(ExecInfo *Info, const int argc, const char *argv[]) {
 	//Error message templates
 	char InvalidArgMessage[] = 
 		"Error: invalid option \'%c\' at position %d of argument %d:\n"
-		"	%s\n"
-		"	%s%s^ Invalid option '%c'%s\n";
+		"        %s\n"
+		"        %s%s^ Invalid option '%c'%s\n"
+		"Use the option 'h' for help\n";
 	char InvalidPathMessage[] = 
 		"Error: input file could not be opened (\"%s\": argument %d):\n"
-		"	%s\n"
-		"	%s%s^ failed to open input file%s\n";
+		"        %s\n"
+		"        %s%s^ failed to open input file%s\n";
 	char MultiplePathMessage[] = 
 		"Error: multiple input files found (\"%s\" and \"%s\": arguments %d and %d):\n"
-		"	%s\n"
-		"	%s%s^ multiple inputs provided%s\n";
+		"        %s\n"
+		"        %s%s^ multiple inputs provided%s\n";
 	
 	char FormatRedText[] = "\x1B[31m";
 	char FormatClearText[] = "\x1B[0m";
-	//FreeArgs is used to prevent the same option from being used multiple times
-	int FreeArgs[127];
-	for (int i = 0; i < 127; i++) {
-		FreeArgs[i] = 1;
-	}
 	
 	//If there is no console, don't colour text
 	if (!isatty(1)) {
 		FormatRedText[0] = '\0';
 		FormatClearText[0] = '\0';
+	}
+	
+	//FreeArgs is used to prevent the same option from being used multiple times
+	int FreeArgs[127];
+	for (int i = 0; i < 127; i++) {
+		FreeArgs[i] = 1;
 	}
 	
 	for (int i = 1; i < argc; i++) {
@@ -79,7 +60,8 @@ int ParseArgs(ExecInfo *Info, const int argc, const char *argv[]) {
 		
 		if (argv[i][0] == '-') {
 			int ii = 1;
-			while (argv[i][ii] != '\0') {
+			
+			while (argv[i][ii] != '\0' || ii == 1) {
 				//Can't declare variables inside switch statements
 				char CommandMarkerOffset[FullCommandIndex + ii + 2];
 				int iii;
@@ -104,8 +86,17 @@ int ParseArgs(ExecInfo *Info, const int argc, const char *argv[]) {
 						case 'a':
 							Info->Config.CFFlags += COPYFILE_SECURITY;
 							break;
+						//Display the version number
+						case 'v':
+							DisplayInfo(Info, 0);
+							return 2;
 						//Display the help page
 						case 'h':
+							DisplayInfo(Info, 1);
+							return 2;
+						//Display the about page
+						case 'A':
+							DisplayInfo(Info, 2);
 							return 2;
 						//Throw an error and exit if an unknown option is provided
 						default:
@@ -159,5 +150,12 @@ int ParseArgs(ExecInfo *Info, const int argc, const char *argv[]) {
 		}
 		FullCommandIndex += strlen(argv[i]) + 3;
 	}
+	
+	//If no path was given
+	if (Info->Config.FPath[0] == '\0') {
+		fprintf(stderr, "Error: No path was provided\n");
+		return 1;
+	}
+	
 	return 0;
 }

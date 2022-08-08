@@ -18,7 +18,6 @@ typedef struct ExecConfig {
 } ExecConfig;
 
 typedef struct ExecInfo {
-	int Version;
 	char VersionString[50];
 	ExecConfig Config;
 } ExecInfo;

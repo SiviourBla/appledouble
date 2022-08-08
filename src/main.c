@@ -12,21 +12,21 @@
 #include <copyfile.h>
 #include <string.h>
 #include "customDefs.h"
+#include "info.h"
 #include "args.h"
 #include "appledouble.h"
 
 int main(int argc, char *argv[]) {
 	ExecInfo Info = {
-		//Version ID
-		2,
 		//Version Name
-		"1.0.0"
+		"1.1.0"
 	};
 	Info.Config.CFFlags = COPYFILE_XATTR | COPYFILE_PACK | COPYFILE_EXCL | COPYFILE_NOFOLLOW;
 	Info.Config.Opt_R = 0;
+	Info.Config.FPath[0] = '\0';
 	
 	if (argc < 2) {
-		DisplayHelp(Info);
+		DisplayInfo(&Info, 1);
 		return 0;
 	}
 	int ArgsResponse = ParseArgs(&Info, argc, (const char**)argv);
@@ -38,9 +38,8 @@ int main(int argc, char *argv[]) {
 		//Errors have already been printed in the ParseArgs function
 		case 1:
 			return 1;
-		//Help page requested
+		//Info was requested and has already been printed
 		case 2:
-			DisplayHelp(Info);
 			return 0;
 		default:
 			fprintf(stderr, "ParseArgs function outputted an unknown value: \"%d\"!\n", ArgsResponse);
