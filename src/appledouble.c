@@ -18,7 +18,7 @@ int MakeAppleDouble(ExecInfo *Info) {
 	//Make input path absolute before trying anything else
 	char OldFPath[strlen(Info->Config.FPath) + 2];
 	strcpy(OldFPath, Info->Config.FPath);
-	//realpath(OldFPath, Info->Config.FPath);
+	realpath(OldFPath, Info->Config.FPath);
 	
 	//Loop through the input path and add "._" to the beginning of the file/folder's name for the output
 	char OutputPath[strlen(Info->Config.FPath) + 4];
