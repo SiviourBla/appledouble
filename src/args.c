@@ -83,6 +83,11 @@ int ParseArgs(ExecInfo *Info, const int argc, const char *argv[]) {
 						case 'R':
 							Info->Config.Opt_R = 1;
 							break;
+						//Debug/dry run mode
+						case 'd':
+							Info->Config.CFFlags += COPYFILE_CHECK;
+							Info->Config.Opt_D = 1;
+							break;
 						//Copy POSIX and ACL information in addition to extended attributes
 						case 'a':
 							Info->Config.CFFlags += COPYFILE_SECURITY;

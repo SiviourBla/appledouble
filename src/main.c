@@ -19,7 +19,7 @@
 int main(int argc, char *argv[]) {
 	ExecInfo Info = {
 		//Version Name
-		"1.1.1"
+		"1.2.0"
 	};
 	Info.Config.CFFlags = COPYFILE_XATTR | COPYFILE_PACK | COPYFILE_EXCL | COPYFILE_NOFOLLOW;
 	Info.Config.Opt_R = 0;

@@ -77,10 +77,26 @@ int MakeAppleDouble(ExecInfo *Info) {
 	}
 	
 	//If copyfile outputs a value other than 0, it has failed
-	int ResultCode = copyfile(Info->Config.FPath, OutputPath, NULL, Info->Config.CFFlags);
-	if (ResultCode) {
-		fprintf(stderr, "Error: copyfile failed with error code %d!\nInput file: \"%s\"\nOutput file: \"%s\"\n", ResultCode, Info->Config.FPath, OutputPath);
-		fprintf(stderr, "Please refer to copyfile's error codes through 'man 3 copyfile' for more information\n");
+	if (!Info->Config.Opt_D) {
+		int ResultCode = copyfile(Info->Config.FPath, OutputPath, NULL, Info->Config.CFFlags);
+		if (ResultCode) {
+			fprintf(stderr, "Error: copyfile failed with error code %d!\nInput file: \"%s\"\nOutput file: \"%s\"\n", ResultCode, Info->Config.FPath, OutputPath);
+			fprintf(stderr, "Please refer to copyfile's error codes through 'man 3 copyfile' for more information\n");
+		}
+		return ResultCode;
+	//If debug mode is enabled, don't run copyfile and instead print debug info
+	} else {
+		copyfile_flags_t CopiedFlags = copyfile(Info->Config.FPath, OutputPath, NULL, Info->Config.CFFlags);
+		Info->Config.CFFlags -= COPYFILE_CHECK;
+		copyfile_flags_t FixedCopyFlags[] = {Info->Config.CFFlags, CopiedFlags};
+		printf("Debug/dry run mode active:\n"
+			"        Input file (local path): \"%s\"\n"
+			"        Input file: \"%s\"\n"
+			"        Skipped output file: \"%s\"\n"
+			"        Input flags: %xx\n"
+			"        COPYFILE_CHECK flags: %xx"
+		"\n", OldFPath, Info->Config.FPath, OutputPath, FixedCopyFlags[0], FixedCopyFlags[1]);
+		
+		return 0;
 	}
-	return ResultCode;
 }

@@ -23,12 +23,13 @@ void DisplayInfo(ExecInfo *Info, const int DisplayMode) {
 		"        copyfile: man 3 copyfile\n"
 		"\n"
 		"Usage:\n"
-		"        appledouble [-frRavhA] file\n" 
+		"        appledouble [-frRdavhA] file\n" 
 		"\n"
 		"Options:\n" 
 		"        -f    Overwrite any existing appledouble files\n"//COPYFILE_UNLINK + !COPYFILE_EXCL
 		"        -r    Follow symlinks\n"//!COPYFILE_NOFOLLOW
 		"        -R    Attempt to convert existing appledouble files\n"//!COPYFILE_NOFOLLOW
+		"        -d    Enables debug/dry run mode\n"//COPYFILE_CHECK
 		"        -a    Copy POSIX and ACL information in addition to extended attributes\n"//COPYFILE_SECURITY
 		"        -v    Display the version number\n"
 		"        -h    Display this help page\n"
