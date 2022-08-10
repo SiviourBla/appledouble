@@ -14,6 +14,7 @@
 typedef struct ExecConfig {
 	copyfile_flags_t CFFlags;
 	int Opt_R;
+	int Opt_rr;
 	char FPath[3334];
 } ExecConfig;
 

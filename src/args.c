@@ -76,6 +76,7 @@ int ParseArgs(ExecInfo *Info, const int argc, const char *argv[]) {
 							break;
 						//Follow symlinks
 						case 'r':
+							Info->Config.Opt_rr = 1;
 							Info->Config.CFFlags -= COPYFILE_NOFOLLOW;
 							break;
 						//Allow the input file to be an appledouble file
